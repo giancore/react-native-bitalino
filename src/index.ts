@@ -1,26 +1,54 @@
-import { NativeModulesProxy, EventEmitter, Subscription } from 'expo-modules-core';
+import {
+  NativeModulesProxy,
+  EventEmitter,
+  Subscription,
+  PermissionResponse,
+} from "expo-modules-core";
 
-// Import the native module. On web, it will be resolved to ReactNativeBitalino.web.ts
-// and on native platforms to ReactNativeBitalino.ts
-import ReactNativeBitalinoModule from './ReactNativeBitalinoModule';
-import ReactNativeBitalinoView from './ReactNativeBitalinoView';
-import { ChangeEventPayload, ReactNativeBitalinoViewProps } from './ReactNativeBitalino.types';
+import {
+  BitalinoDeviceEvent,
+  BitalinoFrameEvent,
+} from "./ReactNativeBitalino.types";
+import ReactNativeBitalinoModule from "./ReactNativeBitalinoModule";
 
-// Get the native constant value.
-export const PI = ReactNativeBitalinoModule.PI;
+const emitter = new EventEmitter(
+  ReactNativeBitalinoModule ?? NativeModulesProxy.ReactNativeBitalino,
+);
 
-export function hello(): string {
-  return ReactNativeBitalinoModule.hello();
+export async function scanBitalinoDevices(
+  scanPeriod: number,
+): Promise<boolean> {
+  return await ReactNativeBitalinoModule.scanBitalinoDevices(scanPeriod);
 }
 
-export async function setValueAsync(value: string) {
-  return await ReactNativeBitalinoModule.setValueAsync(value);
+export function connect(address: string): boolean {
+  return ReactNativeBitalinoModule.connect(address);
 }
 
-const emitter = new EventEmitter(ReactNativeBitalinoModule ?? NativeModulesProxy.ReactNativeBitalino);
-
-export function addChangeListener(listener: (event: ChangeEventPayload) => void): Subscription {
-  return emitter.addListener<ChangeEventPayload>('onChange', listener);
+export function start(channels: number[], frequency: number): boolean {
+  return ReactNativeBitalinoModule.start(channels, frequency);
 }
 
-export { ReactNativeBitalinoView, ReactNativeBitalinoViewProps, ChangeEventPayload };
+export function stop(): boolean {
+  return ReactNativeBitalinoModule.stop();
+}
+
+export function state(): boolean {
+  return ReactNativeBitalinoModule.state();
+}
+
+export function scanBitalinoDevicesListener(
+  listener: (event: BitalinoDeviceEvent) => void,
+): Subscription {
+  return emitter.addListener("Expo.onBluetoothDeviceScanned", listener);
+}
+
+export function startAcquisitionListener(
+  listener: (event: BitalinoFrameEvent) => void,
+): Subscription {
+  return emitter.addListener("Expo.onBITalinoDataAvailable", listener);
+}
+
+export async function requestPermissionsAsync(): Promise<PermissionResponse> {
+  return ReactNativeBitalinoModule.requestPermissionsAsync();
+}

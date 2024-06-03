@@ -1,7 +1,15 @@
-export type ChangeEventPayload = {
-  value: string;
+export type BitalinoDeviceEvent = {
+  device: {
+    name: string;
+    address: string;
+  };
 };
 
-export type ReactNativeBitalinoViewProps = {
-  name: string;
+export type BitalinoFrameEvent = {
+  frame: {
+    identifier: string;
+    seq: number;
+    analog: number[];
+    digital: number[];
+  };
 };
