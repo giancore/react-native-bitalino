@@ -111,7 +111,21 @@ class ReactNativeBitalinoModule : Module() {
 
         return@Function bitalino?.connect(address)
       } catch (e: BITalinoException) {
-        throw Exception("ReactNativeBitalinoModule: failed to connect bitalino device", e)
+        throw Exception(
+            "ReactNativeBitalinoModule: failed to tries to connect to the device with the given MAC address",
+            e
+        )
+      }
+    }
+
+    Function("disconnect") {
+      try {
+        return@Function bitalino?.disconnect()
+      } catch (e: BITalinoException) {
+        throw Exception(
+            "ReactNativeBitalinoModule: failed to disconnects the device and closes the connection channel created.",
+            e
+        )
       }
     }
 
@@ -120,7 +134,10 @@ class ReactNativeBitalinoModule : Module() {
         return@Function bitalino?.start(channels, frequency)
       } catch (e: BITalinoException) {
         Log.e("TAG", e.printStackTrace().toString())
-        throw Exception("ReactNativeBitalinoModule: failed to start acquisition device", e)
+        throw Exception(
+            "ReactNativeBitalinoModule: failed to starts the acquisition mode of the device",
+            e
+        )
       }
     }
 
@@ -138,6 +155,44 @@ class ReactNativeBitalinoModule : Module() {
         return@Function bitalino?.stop()
       } catch (e: BITalinoException) {
         throw Exception("ReactNativeBitalinoModule: failed to stop acquisition device", e)
+      }
+    }
+
+    Function("battery") { value: Int ->
+      try {
+        return@Function bitalino?.battery(value)
+      } catch (e: BITalinoException) {
+        throw Exception(
+            "ReactNativeBitalinoModule: failed to sets a new battery threshold for the low-battery LED",
+            e
+        )
+      }
+    }
+
+    Function("version") {
+      try {
+        return@Function bitalino?.getVersion()
+      } catch (e: BITalinoException) {
+        throw Exception("ReactNativeBitalinoModule: failed to get the device's firmware version", e)
+      }
+    }
+
+    Function("trigger") { digitalChannels: IntArray ->
+      try {
+        return@Function bitalino?.trigger(digitalChannels)
+      } catch (e: BITalinoException) {
+        throw Exception("ReactNativeBitalinoModule: failed to assigns the digital output states", e)
+      }
+    }
+
+    Function("pwm") { pwmOutput: Int ->
+      try {
+        return@Function bitalino?.pwm(pwmOutput)
+      } catch (e: BITalinoException) {
+        throw Exception(
+            "ReactNativeBitalinoModule: failed to assigns the analog (PWM) output value",
+            e
+        )
       }
     }
   }

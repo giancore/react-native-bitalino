@@ -1,0 +1,15 @@
+{
+  "originHash" : "381dced2b8004bb9d5a7b72fd64a8d29ff0c8840d4beb6857f1333e060a0aa3d",
+  "pins" : [
+    {
+      "identity" : "bitalinolibrary",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/giancore/BitalinoLibrary",
+      "state" : {
+        "revision" : "d2886b976c93028fa14a046b2c50f3abcc02e6f0",
+        "version" : "1.0.7"
+      }
+    }
+  ],
+  "version" : 3
+}
