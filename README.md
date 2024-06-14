@@ -1,35 +1,87 @@
-# react-native-bitalino
+# React Native Bitalino
 
-Bitalino API for React Native
+This library provides a connection and usage for BITalino (BTH only)
 
-# API documentation
+### Currently supporting:
 
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/react-native-bitalino.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/react-native-bitalino/)
+This plugin uses the available native APIs available at https://bitalino.com/en/development/apis.
 
-# Installation in managed Expo projects
+| Plaftorm | Supported |                                 Native Repository                                 |
+| :------: | :-------: | :-------------------------------------------------------------------------------: |
+| Android  |    ✅     | [revolution-android-api](https://github.com/BITalinoWorld/revolution-android-api) |
+|   iOS    |    ❌     |                         I need to find a iOS BTH library                          |
 
-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](#api-documentation). If you follow the link and there is no documentation available then this library is not yet usable within managed projects &mdash; it is likely to be included in an upcoming Expo SDK release.
+## Installation
 
-# Installation in bare React Native projects
+    npx expo install react-native-bitalino
 
-For bare React Native projects, you must ensure that you have [installed and configured the `expo` package](https://docs.expo.dev/bare/installing-expo-modules/) before continuing.
+or
 
-### Add the package to your npm dependencies
+    npm install react-native-bitalino
 
+## Usage
+
+### API
+
+```typescript
+import * as ReactNativeBitalino from "react-native-bitalino";
 ```
-npm install react-native-bitalino
+
+### Scan Devices
+
+```typescript
+async function scanBitalinoDeviceAsync() {
+  try {
+    const returnValue = await ReactNativeBitalino.scanBitalinoDevices(10000);
+    console.log(returnValue);
+  } catch (error) {
+    console.error(error);
+  }
+}
 ```
 
-### Configure for iOS
+Create a listener to get all devices
 
-Run `npx pod-install` after installing the npm package.
+```typescript
+useEffect(() => {
+  const listener = ReactNativeBitalino.scanBitalinoDevicesListener(
+    ({ device }) => console.log(device)
+  );
 
+  return () => listener.remove();
+}, []);
+```
 
-### Configure for Android
+After connecting, you can start an acquisition
 
+```typescript
+function connect() {
+  try {
+    const result = ReactNativeBitalino.connect("20:18:06:13:01:33");
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
+function start() {
+  try {
+    const result = ReactNativeBitalino.start([0, 1, 2, 3, 4, 5], 1);
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
 
-# Contributing
+And get the acquisition result in a event
 
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
+```typescript
+useEffect(() => {
+  const listener = ReactNativeBitalino.startAcquisitionListener(({ frame }) =>
+    console.log(frame)
+  );
+
+  return () => listener.remove();
+}, []);
+```
