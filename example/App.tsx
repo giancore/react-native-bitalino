@@ -27,7 +27,6 @@ export default function App() {
       console.log(result);
     } catch (error) {
       console.error(error);
-      console.error(JSON.stringify(error));
     }
   }
 
