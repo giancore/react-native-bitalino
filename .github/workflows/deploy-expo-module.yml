@@ -3,7 +3,7 @@ name: Build Expo Module
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
