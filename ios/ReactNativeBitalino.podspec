@@ -24,4 +24,15 @@ Pod::Spec.new do |s|
   }
 
   s.source_files = "**/*.{h,m,swift}"
+  
+  # Automatically include PluxAPI.framework if present
+  # Download framework from: https://www.pluxbiosignals.com/pages/download-software
+  # Place at: ios/Frameworks/PluxAPI.framework
+  # See ios/Frameworks/README.md for detailed instructions
+  s.vendored_frameworks = "Frameworks/PluxAPI.framework"
+  
+  # Framework search paths
+  s.xcconfig = {
+    'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/../Frameworks" "$(PODS_TARGET_SRCROOT)/Frameworks"'
+  }
 end

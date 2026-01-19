@@ -163,7 +163,8 @@ dependencies {
         }
     }
 
-    implementation("com.facebook.react:flipper-integration")
+    // Flipper removed - not needed for Expo apps
+    // implementation("com.facebook.react:flipper-integration")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
